@@ -3,10 +3,12 @@ MAINTAINER Kai Timmer <email@kaitimmer.de>
 
 RUN apt-get update && apt-get install -y \
   build-essential \
+  git \
+  curl \
   libcurl4-openssl-dev
 
-ADD files/esniper-2-35-0.tgz /tmp/
-RUN cd /tmp/esniper-2-35-0; ./configure; make
+RUN git clone https://git.code.sf.net/p/esniper/git /tmp/esniper-git
+RUN cd /tmp/esniper-git; ./configure; make
 
 FROM amd64/debian:stretch
 # install needed php extensions
@@ -24,7 +26,7 @@ RUN apt-get update && apt-get install -y \
   php7.0-xml
 
 # install esniper
-COPY --from=builder /tmp/esniper-2-35-0/esniper /usr/local/bin/
+COPY --from=builder /tmp/esniper-git/esniper /usr/local/bin/
 RUN chmod 755 /usr/local/bin/esniper
 
 # configure apache
