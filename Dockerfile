@@ -1,5 +1,4 @@
-ARG ARCH
-FROM $ARCH/debian:stretch as builder
+FROM amd64/debian:stretch as builder
 MAINTAINER Kai Timmer <email@kaitimmer.de>
 
 RUN apt-get update && apt-get install -y \
@@ -9,7 +8,7 @@ RUN apt-get update && apt-get install -y \
 ADD files/esniper-2-35-0.tgz /tmp/
 RUN cd /tmp/esniper-2-35-0; ./configure; make
 
-FROM $ARCH/debian:stretch
+FROM amd64/debian:stretch
 # install needed php extensions
 RUN apt-get update && apt-get install -y \
   apache2 \
